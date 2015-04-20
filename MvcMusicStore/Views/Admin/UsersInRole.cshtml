@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityUser>
+@{
+    ViewBag.Title = "Users";
+}
+
+<h2>Users In <i>@ViewBag.roleName</i> Role:</h2>
+<hr />
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        @{
+            // Display all users and check the box if they are part of the selected role
+            List<Microsoft.AspNet.Identity.EntityFramework.IdentityUser> userMembers = ViewBag.members;
+            foreach (var user in Model)
+            {
+                // Create hidden form fields which contain the usernames
+                @Html.Hidden("UserNames", user.UserName.ToString());
+                bool isChecked = userMembers.IndexOf(user) > -1;
+                <div class="checkbox">
+                    <label>
+                        @Html.CheckBox(user.UserName.ToString(), isChecked)
+                        @user.UserName.ToString()
+                    </label>
+                </div>
+            }
+        }
+        <div style="margin: 1em;">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back To List", "Index")
+</div>
